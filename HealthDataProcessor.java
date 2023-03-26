@@ -2,7 +2,7 @@
  * Identifeye Health Software Engineering Project
  * File: HealthDataProcessor.java
  * Author: Cynthia Zafiris 
- * Date: 
+ * Date: 3/27/23
  * Description: processes text file displaying patient/exam data
  */
 
@@ -41,7 +41,7 @@ public class HealthDataProcessor {
                 if(!this.exams.containsKey(line[2])){
                     this.exams.put(line[2],new HashSet<>()); // initializes hashset if patient had no previous exams
                 } 
-                if(!this.exams.get(line[2]).contains(line[3])){ // if exam with that ID does not exist, add it
+                if(!this.examIdentifier.containsKey(line[3])){ // if exam with that ID does not exist, add it
                     this.exams.get(line[2]).add(line[3]);
                     this.examIdentifier.put(line[3],line[2]);
                 }
@@ -55,14 +55,18 @@ public class HealthDataProcessor {
     public void delRecord(String[] line){
         if(line[1].equals("PATIENT")){ 
             // line composition: DEL PATIENT PATIENT_ID
-            this.patient.remove(line[2]);
-            for(String exam : this.exams.get(line[2])){
-                this.examIdentifier.remove(exam);
-            }
-            this.exams.remove(line[2]); 
+            if(this.patient.containsKey(line[2])){ // if the patient exists
+                this.patient.remove(line[2]);
+                if(this.exams.get(line[2]) != null){ // if the patient had exams
+                    for(String exam : this.exams.get(line[2])){ // removing every exam of the removed patient from examIdentifier
+                        this.examIdentifier.remove(exam);
+                    }
+                    this.exams.remove(line[2]);
+                }
+            } 
         } else { // equals "EXAM" 
             // line composition: DEL EXAM EXAM_ID
-            if(this.examIdentifier.containsKey(line[2])){
+            if(this.examIdentifier.containsKey(line[2])){ // if the exam exists
                 String patientID = this.examIdentifier.get(line[2]); 
                 this.exams.get(patientID).remove(line[2]);
                 this.examIdentifier.remove(line[2]);
@@ -75,10 +79,10 @@ public class HealthDataProcessor {
     // Description: will print output statement to the terminal containing the names, IDs, and exam counts of all patients
     public void output(){
         for (Map.Entry<String,String> entry : this.patient.entrySet()){ // loops through "patient" to retrieve data
-            if(this.exams.get(entry.getKey()) == null){
+            if(this.exams.get(entry.getKey()) == null){ // if the patient had no exams
                 System.out.println("Name: " + entry.getValue() + ", ID: " + entry.getKey() + ", Exam Count: 0");
-            } else {
-                System.out.println("Name: " + entry.getValue() + ", ID: " + entry.getKey() + ", Exam Count: " + this.exams.get(entry.getKey()).size());
+            } else { // if the patient had exams
+                System.out.println("Name: " + entry.getValue() + ", ID: " + entry.getKey() + ", Exam Count: " + this.exams.get(entry.getKey()).size() + ", Exam List: " + Arrays.toString(this.exams.get(entry.getKey()).toArray()));
             }
         }
     }
@@ -98,9 +102,6 @@ public class HealthDataProcessor {
             }
         }
         br.close();    
-        // System.out.println(processor.patient);
-        // System.out.println(processor.exams);
-        // System.out.println(processor.examIdentifier);
         processor.output();    
     }
 }
