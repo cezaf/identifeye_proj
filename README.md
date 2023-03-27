@@ -15,9 +15,9 @@
   
   The file also contains a "main" function, which will run the overall program. There are two sample input documents for this program, "test_identifeye.txt" and "test_identifeye_2.txt", which are discussed below.
   ## Testing: 
- This program was tested with two input documents. One of these documents is the same example given in the project instructions, and the other is a more extensive iteration of that example that checks all edge cases. 
+ This program was tested with two input documents. One of these documents is the same example given in the project instructions, and the other is a more extensive iteration of that example that checks all edge cases and all methods under different circumstances (ex. it includes deleting a patient record that has no exams and a patient record that has two exams to ensure that the program can handle both cases). 
   With the first input document, the program is able to give the same output as listed in the instructions, showing that program can generally perform the desired functions. With the second input document, the 
-  program is able to give an accurate output (I wrote the computed output by hand to compare with the program), proving that it can pass all described edge cases. Additionally, 
+  program is able to give an accurate output (I wrote the computed output by hand to compare with the program), proving that it can pass all described edge cases and run all methods properly. Additionally, 
   I printed all attributes after each line was read while running both files to ensure that the system was adding or deleting records correctly. 
   ## How To Run:  
   Open the Terminal and ensure that you are in the same directory as all the files featured in this repository (including the input text documents). As it is written in Java, the program will need to be compiled first. 
